@@ -1,0 +1,55 @@
+	
+Sort an Array
+
+********************************************* Solution
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+  var RadexSort = function(nums,div){
+      let cArray = [19];
+    for (let i=0 ; i<19 ; ++i){
+        cArray[i] = 0;
+    }
+    for (let i=0 ; i<nums.length ; ++i){
+        cArray[(Math.floor((nums[i]/div)%10) + 9)]++;
+    }
+    for (let i=1 ;  i<19 ; ++i){
+        cArray[i] = cArray[i] + cArray[i-1];
+    }
+    let outPut=[nums.length];
+    for (let i= nums.length - 1; i>=0 ; i-- ){
+        outPut[cArray[(Math.floor((nums[i]/div))%10 + 9)] - 1] = nums[i];
+        cArray[(Math.floor((nums[i]/div)%10) + 9)]--;
+    }
+    for (let i=0 ; i<nums.length ; ++i){
+        nums[i] = outPut[i];
+    }
+ }
+ var FMax= function(nums){
+     let Max = nums[0];
+     let Min = nums[0];
+     for (let i=0 ; i <nums.length ;++i){
+         if (nums[i]>Max){
+             Max = nums[i];
+         }
+         if (Min>nums[i]){
+             Min = nums[i];
+         }
+   
+     }
+     Max = Math.abs(Max) > Math.abs(Min) ? Math.abs(Max) : Math.abs(Min); 
+      return Max;
+ }
+ var pIndex = function(nums,max){
+     for (let i=1 ; (max/i)>0 ; i*=10){
+         RadexSort(nums,i);
+     }
+ }
+ 
+    // using Radix Sort
+var sortArray = function(nums) {
+       let Max = FMax(nums);
+        pIndex(nums,Max);
+        return nums;
+};
